@@ -73,7 +73,7 @@
 		<Navigation />
 
 		<!-- Hero Content -->
-		<div class="relative z-10 px-6 py-20 lg:px-12 w-full">
+		<div class="relative z-10 px-6 pt-10 pb-20 md:py-20 lg:px-12 lg:py-32 parallax-container">
 			<div class="max-w-4xl mx-auto text-center">
 				<div class="space-y-8">
 					<!-- Badge -->
