@@ -40,8 +40,8 @@
 	<div class="flex items-center space-x-3">
 		<a href="/" class="flex items-center space-x-3">
 			<div class="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl hover-glow">
-				<svg class="w-4 h-4 sm:w-6 sm:h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-					<path d="M12 1L3 5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 1M12 7C13.11 7 14 7.89 14 9C14 10.11 13.11 11 12 11C10.89 11 10 10.11 10 9C10 7.89 10.89 7 12 7M18 9C18 13.25 15.39 17 12 17.5C8.61 17 6 13.25 6 9V6.3L12 3.19L18 6.3V9Z"/>
+				<svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+					<path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
 				</svg>
 			</div>
 			<span class="text-xl sm:text-2xl font-bold text-white">DefenSys</span>
@@ -60,13 +60,13 @@
 	
 	<!-- Desktop CTA Buttons -->
 	<div class="hidden sm:flex items-center space-x-3 lg:space-x-4">
-		<button class="text-sm hover:text-blue-400 transition-all duration-300 font-medium relative group text-white">
+		<a href="/login" class="text-sm hover:text-blue-400 transition-all duration-300 font-medium relative group text-white">
 			Sign In
 			<span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-400 transition-all duration-300 group-hover:w-full"></span>
-		</button>
-		<button class="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 px-4 lg:px-6 py-2 lg:py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-blue-500/25 text-white">
+		</a>
+		<a href="/signup" class="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 px-4 lg:px-6 py-2 lg:py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-blue-500/25 text-white">
 			Get Started
-		</button>
+		</a>
 	</div>
 
 	<!-- Mobile Menu Button -->
@@ -94,12 +94,12 @@
 				</div>
 				
 				<div class="pt-8 space-y-4 flex flex-col">
-					<button class="text-xl font-medium text-white textcenter hover:text-blue-400 transition-colors" on:click={toggleMobileMenu}>
+					<a href="/login" class="text-xl font-medium text-white textcenter hover:text-blue-400 transition-colors" on:click={toggleMobileMenu}>
 						Sign In
-					</button>
-					<button class="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 px-8 py-3 rounded-xl font-semibold text-lg transition-all duration-300 text-white">
+					</a>
+					<a href="/signup" class="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 px-8 py-3 rounded-xl font-semibold text-lg transition-all duration-300 text-white" on:click={toggleMobileMenu}>
 						Get Started
-					</button>
+					</a>
 				</div>
 			</div>
 		</div>

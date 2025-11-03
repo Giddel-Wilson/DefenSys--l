@@ -1,6 +1,7 @@
 <script>
 	import Navigation from '$lib/components/Navigation.svelte';
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 	
 	let isLoaded = false;
 	
@@ -134,8 +135,8 @@
 								</svg>
 							</div>
 							<div>
-								<h3 class="text-xl font-bold text-white mb-2">Zero-Trust Architecture</h3>
-								<p class="text-gray-400">Never trust, always verify. Every access request is authenticated, authorized, and encrypted before network access is granted.</p>
+								<h3 class="text-xl font-bold text-white mb-2">JWT Authentication</h3>
+								<p class="text-gray-400">Secure token-based authentication with httpOnly cookies and bcrypt password hashing for maximum protection.</p>
 							</div>
 						</div>
 					</div>
@@ -148,8 +149,8 @@
 								</svg>
 							</div>
 							<div>
-								<h3 class="text-xl font-bold text-white mb-2">End-to-End Encryption</h3>
-								<p class="text-gray-400">AES-256 encryption for data at rest and TLS 1.3 for data in transit. Your sensitive information is always protected.</p>
+								<h3 class="text-xl font-bold text-white mb-2">Encrypted Data Storage</h3>
+								<p class="text-gray-400">MongoDB with secure connections, data encryption, and role-based access control for all stored information.</p>
 							</div>
 						</div>
 					</div>
@@ -162,8 +163,8 @@
 								</svg>
 							</div>
 							<div>
-								<h3 class="text-xl font-bold text-white mb-2">Real-Time Threat Detection</h3>
-								<p class="text-gray-400">AI-powered monitoring systems that detect and respond to threats in milliseconds, not minutes.</p>
+								<h3 class="text-xl font-bold text-white mb-2">Vulnerability Detection</h3>
+								<p class="text-gray-400">Automated scanning for SQL injection, XSS, CSRF, SSL/TLS issues, and security misconfigurations.</p>
 							</div>
 						</div>
 					</div>
@@ -176,8 +177,8 @@
 								</svg>
 							</div>
 							<div>
-								<h3 class="text-xl font-bold text-white mb-2">Multi-Factor Authentication</h3>
-								<p class="text-gray-400">Advanced MFA with biometric verification, hardware tokens, and behavioral analysis for maximum security.</p>
+								<h3 class="text-xl font-bold text-white mb-2">Role-Based Access</h3>
+								<p class="text-gray-400">Granular user and admin roles with customizable permissions to control access to sensitive features.</p>
 							</div>
 						</div>
 					</div>
@@ -350,10 +351,16 @@
 				Experience enterprise-grade security with the simplicity of modern cloud platforms.
 			</p>
 			<div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-				<button class="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 px-10 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25">
+				<button
+					on:click={() => goto('/login')}
+					class="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 px-10 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25"
+				>
 					Start Security Assessment
 				</button>
-				<button class="border-2 border-blue-400 hover:bg-blue-400/10 px-10 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:border-blue-300 text-white">
+				<button
+					on:click={() => goto('/docs')}
+					class="border-2 border-blue-400 hover:bg-blue-400/10 px-10 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:border-blue-300 text-white"
+				>
 					View Security Whitepaper
 				</button>
 			</div>

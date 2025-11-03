@@ -1,13 +1,76 @@
-<script>
+<script lang="ts">
 	import Navigation from '$lib/components/Navigation.svelte';
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 	
 	let isLoaded = false;
 	let selectedCategory = 'technical';
 	
+	// Form state
+	let name = '';
+	let email = '';
+	let subject = '';
+	let priority = 'medium';
+	let message = '';
+	let isSubmitting = false;
+	let submitMessage = '';
+	let submitMessageType = ''; // 'success' or 'error'
+	
 	onMount(() => {
 		isLoaded = true;
 	});
+
+	async function handleSubmit(event: Event) {
+		event.preventDefault();
+
+		// Validation
+		if (!name || !email || !subject || !message) {
+			submitMessage = 'Please fill in all required fields';
+			submitMessageType = 'error';
+			setTimeout(() => { submitMessage = ''; }, 3000);
+			return;
+		}
+
+		if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+			submitMessage = 'Please enter a valid email address';
+			submitMessageType = 'error';
+			setTimeout(() => { submitMessage = ''; }, 3000);
+			return;
+		}
+
+		isSubmitting = true;
+		submitMessage = '';
+
+		try {
+			const response = await fetch('/api/support/contact', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ name, email, subject, priority, message })
+			});
+
+			const data = await response.json();
+
+			if (response.ok) {
+				submitMessage = data.message || 'Message sent successfully! We\'ll get back to you soon.';
+				submitMessageType = 'success';
+				// Reset form
+				name = '';
+				email = '';
+				subject = '';
+				priority = 'medium';
+				message = '';
+			} else {
+				submitMessage = data.error || 'Failed to send message. Please try again.';
+				submitMessageType = 'error';
+			}
+		} catch (error) {
+			submitMessage = 'Network error. Please try again or email us directly.';
+			submitMessageType = 'error';
+		} finally {
+			isSubmitting = false;
+			setTimeout(() => { submitMessage = ''; }, 7000);
+		}
+	}
 
 	const supportOptions = [
 		{
@@ -198,25 +261,29 @@
 					</p>
 				</div>
 				
-				<form class="space-y-6">
+				<form on:submit={handleSubmit} class="space-y-6">
 					<div class="grid sm:grid-cols-2 gap-6">
 						<div>
 							<label for="name" class="block text-sm font-medium text-gray-300 mb-2">Name</label>
 							<input 
 								type="text" 
 								id="name"
-								class="w-full px-4 py-3 rounded-xl bg-slate-700/50 border border-blue-500/30 text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 transition-colors"
+								bind:value={name}
+								disabled={isSubmitting}
+								class="w-full px-4 py-3 rounded-xl bg-slate-700/50 border border-blue-500/30 text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 transition-colors disabled:opacity-50"
 								placeholder="Your full name"
-							>
+							/>
 						</div>
 						<div>
 							<label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email</label>
 							<input 
 								type="email" 
 								id="email"
-								class="w-full px-4 py-3 rounded-xl bg-slate-700/50 border border-blue-500/30 text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 transition-colors"
+								bind:value={email}
+								disabled={isSubmitting}
+								class="w-full px-4 py-3 rounded-xl bg-slate-700/50 border border-blue-500/30 text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 transition-colors disabled:opacity-50"
 								placeholder="your@email.com"
-							>
+							/>
 						</div>
 					</div>
 					
@@ -225,16 +292,20 @@
 						<input 
 							type="text" 
 							id="subject"
-							class="w-full px-4 py-3 rounded-xl bg-slate-700/50 border border-blue-500/30 text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 transition-colors"
+							bind:value={subject}
+							disabled={isSubmitting}
+							class="w-full px-4 py-3 rounded-xl bg-slate-700/50 border border-blue-500/30 text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 transition-colors disabled:opacity-50"
 							placeholder="Brief description of your issue"
-						>
+						/>
 					</div>
 					
 					<div>
 						<label for="priority" class="block text-sm font-medium text-gray-300 mb-2">Priority</label>
 						<select 
 							id="priority"
-							class="w-full px-4 py-3 rounded-xl bg-slate-700/50 border border-blue-500/30 text-white focus:outline-none focus:border-blue-400 transition-colors"
+							bind:value={priority}
+							disabled={isSubmitting}
+							class="w-full px-4 py-3 rounded-xl bg-slate-700/50 border border-blue-500/30 text-white focus:outline-none focus:border-blue-400 transition-colors disabled:opacity-50"
 						>
 							<option value="low">Low - General inquiry</option>
 							<option value="medium">Medium - Standard issue</option>
@@ -248,24 +319,33 @@
 						<textarea 
 							id="message"
 							rows="6"
-							class="w-full px-4 py-3 rounded-xl bg-slate-700/50 border border-blue-500/30 text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 transition-colors resize-none"
+							bind:value={message}
+							disabled={isSubmitting}
+							class="w-full px-4 py-3 rounded-xl bg-slate-700/50 border border-blue-500/30 text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 transition-colors resize-none disabled:opacity-50"
 							placeholder="Please describe your issue or question in detail..."
 						></textarea>
 					</div>
 					
+					{#if submitMessage}
+						<div class="text-center p-4 rounded-xl {submitMessageType === 'success' ? 'bg-green-500/10 text-green-400 border border-green-500/30' : 'bg-red-500/10 text-red-400 border border-red-500/30'}">
+							{submitMessage}
+						</div>
+					{/if}
+					
 					<div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
 						<button 
 							type="submit"
-							class="flex-1 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25"
+							disabled={isSubmitting}
+							class="flex-1 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
 						>
-							Send Message
+							{isSubmitting ? 'Sending...' : 'Send Message'}
 						</button>
-						<button 
-							type="button"
-							class="border-2 border-blue-400 hover:bg-blue-400/10 px-8 py-4 rounded-xl font-semibold transition-all duration-300 hover:border-blue-300 text-white"
+						<a 
+							href="mailto:giddel100@gmail.com?subject=Schedule Call Request"
+							class="flex items-center justify-center border-2 border-blue-400 hover:bg-blue-400/10 px-8 py-4 rounded-xl font-semibold transition-all duration-300 hover:border-blue-300 text-white"
 						>
 							Schedule Call
-						</button>
+						</a>
 					</div>
 				</form>
 			</div>

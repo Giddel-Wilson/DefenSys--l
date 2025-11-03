@@ -1,12 +1,54 @@
 <script>
 	import Navigation from '$lib/components/Navigation.svelte';
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 	
 	let isLoaded = false;
+	let email = '';
+	let isSubmitting = false;
+	let message = '';
+	let messageType = ''; // 'success' or 'error'
 	
 	onMount(() => {
 		isLoaded = true;
 	});
+
+	async function handleNotifyMe() {
+		if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+			message = 'Please enter a valid email address';
+			messageType = 'error';
+			setTimeout(() => { message = ''; }, 3000);
+			return;
+		}
+
+		isSubmitting = true;
+		message = '';
+
+		try {
+			const response = await fetch('/api/enterprise/notify', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ email })
+			});
+
+			const data = await response.json();
+
+			if (response.ok) {
+				message = 'Successfully registered! We\'ll notify you when enterprise features launch.';
+				messageType = 'success';
+				email = '';
+			} else {
+				message = data.error || 'Failed to register. Please try again.';
+				messageType = 'error';
+			}
+		} catch (error) {
+			message = 'Network error. Please try again.';
+			messageType = 'error';
+		} finally {
+			isSubmitting = false;
+			setTimeout(() => { message = ''; }, 5000);
+		}
+	}
 </script>
 
 <style>
@@ -135,27 +177,44 @@
 							<div class="space-y-4">
 								<input 
 									type="email" 
+									bind:value={email}
 									placeholder="Enter your email address"
 									class="w-full px-4 py-3 rounded-xl bg-slate-700/50 border border-blue-500/30 text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 transition-colors"
+									disabled={isSubmitting}
+								/>
+								<button 
+									on:click={handleNotifyMe}
+									disabled={isSubmitting}
+									class="w-full bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25 disabled:opacity-50 disabled:cursor-not-allowed"
 								>
-								<button class="w-full bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25">
-									Notify Me
+									{isSubmitting ? 'Submitting...' : 'Notify Me'}
 								</button>
+								{#if message}
+									<div class="text-center text-sm {messageType === 'success' ? 'text-green-400' : 'text-red-400'}">
+										{message}
+									</div>
+								{/if}
 							</div>
 						</div>
 					</div>
 					
 					<!-- Contact CTA -->
 					<div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6 {isLoaded ? 'animate-[fadeInUp_1s_ease-out_1.1s]' : 'opacity-0'} [animation-fill-mode:both]">
-						<button class="border-2 border-blue-400 hover:bg-blue-400/10 px-10 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:border-blue-300 hover:shadow-lg hover:shadow-blue-400/25 group">
+						<a
+							href="mailto:giddel100@gmail.com?subject=Enterprise Solutions Inquiry"
+							class="border-2 border-blue-400 hover:bg-blue-400/10 px-10 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:border-blue-300 hover:shadow-lg hover:shadow-blue-400/25 group"
+						>
 							<span class="flex items-center justify-center space-x-2">
 								<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
 								</svg>
 								<span>Contact Sales Team</span>
 							</span>
-						</button>
-						<button class="border-2 border-gray-600 hover:bg-gray-600/10 px-10 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:border-gray-500 text-gray-300 hover:text-white">
+						</a>
+						<button
+							on:click={() => goto('/features')}
+							class="border-2 border-gray-600 hover:bg-gray-600/10 px-10 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:border-gray-500 text-gray-300 hover:text-white"
+						>
 							Learn About Current Features
 						</button>
 					</div>

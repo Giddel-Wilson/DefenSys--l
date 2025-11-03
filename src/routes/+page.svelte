@@ -1,6 +1,7 @@
 <script>
 	import { onDestroy, onMount } from 'svelte';
 	import { browser } from '$app/environment';
+	import { goto } from '$app/navigation';
 	import mrWilson from '$lib/assets/c7ddb4c8-ea6d-47c0-a148-480b86d104fb.jpeg';
 	
 	let mobileMenuOpen = false;
@@ -207,7 +208,7 @@
 	<nav class="z-50 flex items-center justify-between px-4 sm:px-6 py-4 sm:py-6 lg:px-12 {mobileMenuOpen ? 'fixed top-0 left-0 right-0 bg-slate-900/95 backdrop-blur-sm' : 'relative'} transition-all duration-500">
 		<div class="flex items-center space-x-3 {isLoaded ? 'animate-[fadeInLeft_1s_ease-out]' : 'opacity-0'}">
 			<div class="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl hover-glow floating">
-				<svg class="w-4 h-4 sm:w-6 sm:h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+								<svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
 					<path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
 				</svg>
 			</div>
@@ -240,13 +241,13 @@
 		
 		<!-- Desktop CTA Buttons -->
 		<div class="hidden sm:flex items-center space-x-3 lg:space-x-4 {isLoaded ? 'animate-[fadeInRight_1s_ease-out_0.3s]' : 'opacity-0'} [animation-fill-mode:both]">
-			<button class="text-sm hover:text-blue-400 transition-all duration-300 font-medium relative group">
+			<a href="/login" class="text-sm hover:text-blue-400 transition-all duration-300 font-medium relative group">
 				Sign In
 				<span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-400 transition-all duration-300 group-hover:w-full"></span>
-			</button>
-			<button class="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 px-4 lg:px-6 py-2 lg:py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-blue-500/25">
+			</a>
+			<a href="/signup" class="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 px-4 lg:px-6 py-2 lg:py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-blue-500/25">
 				Get Started
-			</button>
+			</a>
 		</div>
 
 		<!-- Mobile Menu Button -->
@@ -276,12 +277,12 @@
 					</div>
 					
 					<div class="pt-8 space-y-4">
-						<button class="block w-full text-lg font-medium text-white hover:text-blue-400 transition-colors" on:click={toggleMobileMenu}>
+						<a href="/login" class="block w-full text-lg font-medium text-white hover:text-blue-400 transition-colors" on:click={toggleMobileMenu}>
 							Sign In
-						</button>
-						<button class="w-full bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 px-8 py-3 rounded-xl text-lg font-semibold transition-all transform hover:scale-105" on:click={toggleMobileMenu}>
+						</a>
+						<a href="/signup" class="w-full bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 px-8 py-3 rounded-xl text-lg font-semibold transition-all transform hover:scale-105 block text-center" on:click={toggleMobileMenu}>
 							Get Started
-						</button>
+						</a>
 					</div>
 				</div>
 			</div>
@@ -306,7 +307,7 @@
 					<h1 class="text-4xl sm:text-5xl lg:text-6xl xl:text-8xl font-black leading-tight">
 						<span class="block">Secure Your</span>
 						<span class="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-indigo-400">
-							Network Infrastructure
+							Web Applications
 						</span>
 						<span class="block text-2xl sm:text-3xl lg:text-4xl xl:text-5xl mt-4 text-gray-300 font-medium">
 							with DefenSys
@@ -314,26 +315,32 @@
 					</h1>
 					
 					<p class="text-lg sm:text-xl lg:text-2xl text-gray-300 leading-relaxed max-w-4xl mx-auto">
-						Advanced vulnerability scanning that identifies open ports, misconfigurations, exposed services, and security threats across your entire network infrastructure in real-time.
+						AI-powered vulnerability scanner that detects SQL injection, XSS, CSRF, security misconfigurations, and SSL/TLS issues in your web applications with real-time reporting.
 					</p>
 				</div>
 				
 				<!-- CTA Buttons -->
 				<div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6 {isLoaded ? 'animate-[fadeInUp_1s_ease-out_1.5s]' : 'opacity-0'} [animation-fill-mode:both]">
-					<button class="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 px-10 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25 hover-glow group">
+					<button 
+						on:click={() => goto('/login')}
+						class="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 px-10 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25 hover-glow group"
+					>
 						<span class="flex items-center justify-center space-x-2">
-							<span>Start Free Scan</span>
+							<span>Start Free Trial</span>
 							<svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
 							</svg>
 						</span>
 					</button>
-					<button class="border-2 border-blue-400 hover:bg-blue-400/10 px-10 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:border-blue-300 hover:shadow-lg hover:shadow-blue-400/25 group">
+					<button 
+						on:click={() => goto('/docs')}
+						class="border-2 border-blue-400 hover:bg-blue-400/10 px-10 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:border-blue-300 hover:shadow-lg hover:shadow-blue-400/25 group"
+					>
 						<span class="flex items-center justify-center space-x-2">
 							<svg class="w-5 h-5 transition-transform duration-300 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1.5a2.5 2.5 0 110 5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
 							</svg>
-							<span>Watch Demo</span>
+							<span>Live Demo</span>
 						</span>
 					</button>
 				</div>
@@ -441,15 +448,15 @@
 		</div>
 		
 		<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-			<!-- Real-time Monitoring -->
+			<!-- Vulnerability Scanning -->
 			<div class="group bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm rounded-3xl p-6 lg:p-8 border border-blue-500/20 hover:border-blue-400/40 transition-all duration-500 hover-lift glass">
 				<div class="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mb-4 lg:mb-6 group-hover:scale-110 transition-transform duration-300 hover-glow">
 					<svg class="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-						<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+						<path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"/>
 					</svg>
 				</div>
-				<h3 class="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-3 lg:mb-4">Real-time Monitoring</h3>
-				<p class="text-sm sm:text-base text-gray-400 mb-4 lg:mb-6">Continuous network surveillance with instant threat detection and automated response capabilities.</p>
+				<h3 class="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-3 lg:mb-4">Automated Scanning</h3>
+				<p class="text-sm sm:text-base text-gray-400 mb-4 lg:mb-6">Detect SQL injection, XSS, CSRF, and security misconfigurations with our advanced vulnerability scanner.</p>
 				<div class="text-blue-400 font-semibold group-hover:text-cyan-400 transition-colors text-sm sm:text-base flex items-center space-x-2">
 					<span>Learn More</span>
 					<svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -458,15 +465,15 @@
 				</div>
 			</div>
 			
-			<!-- Advanced Analytics -->
+			<!-- SSL/TLS & Security Headers -->
 			<div class="group bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm rounded-3xl p-6 lg:p-8 border border-blue-500/20 hover:border-blue-400/40 transition-all duration-500 hover-lift glass">
 				<div class="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-2xl flex items-center justify-center mb-4 lg:mb-6 group-hover:scale-110 transition-transform duration-300 hover-glow">
 					<svg class="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-						<path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+						<path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,7A2,2 0 0,1 14,9C14,10.11 13.11,11 12,11C10.89,11 10,10.11 10,9A2,2 0 0,1 12,7Z"/>
 					</svg>
 				</div>
-				<h3 class="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-3 lg:mb-4">Advanced Analytics</h3>
-				<p class="text-sm sm:text-base text-gray-400 mb-4 lg:mb-6">Deep insights with AI-powered analysis, risk scoring, and predictive threat intelligence.</p>
+				<h3 class="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-3 lg:mb-4">SSL/TLS & Headers</h3>
+				<p class="text-sm sm:text-base text-gray-400 mb-4 lg:mb-6">Verify SSL/TLS certificates, analyze security headers, cookie settings, and CORS policies automatically.</p>
 				<div class="text-blue-400 font-semibold group-hover:text-cyan-400 transition-colors text-sm sm:text-base flex items-center space-x-2">
 					<span>Learn More</span>
 					<svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -475,15 +482,15 @@
 				</div>
 			</div>
 			
-			<!-- Automated Reports -->
+			<!-- Real-time Reports -->
 			<div class="group bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm rounded-3xl p-6 lg:p-8 border border-blue-500/20 hover:border-blue-400/40 transition-all duration-500 hover-lift glass">
 				<div class="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-2xl flex items-center justify-center mb-4 lg:mb-6 group-hover:scale-110 transition-transform duration-300 hover-glow">
 					<svg class="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-						<path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 2 2h8c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+						<path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
 					</svg>
 				</div>
-				<h3 class="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-3 lg:mb-4">Automated Reports</h3>
-				<p class="text-sm sm:text-base text-gray-400 mb-4 lg:mb-6">Comprehensive reporting with compliance mapping, executive summaries, and technical details.</p>
+				<h3 class="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-3 lg:mb-4">Real-time Reports</h3>
+				<p class="text-sm sm:text-base text-gray-400 mb-4 lg:mb-6">Generate comprehensive PDF/JSON reports with vulnerability details and remediation recommendations.</p>
 				<div class="text-blue-400 font-semibold group-hover:text-cyan-400 transition-colors text-sm sm:text-base">
 					Learn More →
 				</div>
@@ -514,40 +521,40 @@
 			<div class="text-center group">
 				<div class="bg-gradient-to-br from-blue-900/40 to-cyan-900/40 backdrop-blur-sm rounded-2xl p-4 sm:p-6 lg:p-8 border border-blue-500/20 group-hover:border-blue-400/40 transition-all duration-500 hover-lift glass">
 					<div class="text-3xl sm:text-4xl lg:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mb-2">
-						50K+
+						10K+
 					</div>
-					<div class="text-gray-300 font-medium text-sm sm:text-base">Networks Secured</div>
-					<div class="text-xs sm:text-sm text-blue-400 mt-2 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300">+25% this month</div>
+					<div class="text-gray-300 font-medium text-sm sm:text-base">Security Scans</div>
+					<div class="text-xs sm:text-sm text-blue-400 mt-2 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300">Weekly average</div>
 				</div>
 			</div>
 			
 			<div class="text-center group">
 				<div class="bg-gradient-to-br from-indigo-900/40 to-blue-900/40 backdrop-blur-sm rounded-2xl p-4 sm:p-6 lg:p-8 border border-blue-500/20 group-hover:border-blue-400/40 transition-all duration-500 hover-lift glass">
 					<div class="text-3xl sm:text-4xl lg:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-blue-400 mb-2">
-						99.8%
+						&lt;5min
 					</div>
-					<div class="text-gray-300 font-medium text-sm sm:text-base">Uptime SLA</div>
-					<div class="text-xs sm:text-sm text-blue-400 mt-2 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300">24/7 monitoring</div>
+					<div class="text-gray-300 font-medium text-sm sm:text-base">Setup Time</div>
+					<div class="text-xs sm:text-sm text-blue-400 mt-2 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300">Start scanning now</div>
 				</div>
 			</div>
 			
 			<div class="text-center group">
 				<div class="bg-gradient-to-br from-cyan-900/40 to-blue-900/40 backdrop-blur-sm rounded-2xl p-4 sm:p-6 lg:p-8 border border-blue-500/20 group-hover:border-blue-400/40 transition-all duration-500 hover-lift glass">
 					<div class="text-3xl sm:text-4xl lg:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400 mb-2">
-						2.5M
+						100K+
 					</div>
-					<div class="text-gray-300 font-medium text-sm sm:text-base">Threats Blocked</div>
-					<div class="text-xs sm:text-sm text-blue-400 mt-2 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300">Last 30 days</div>
+					<div class="text-gray-300 font-medium text-sm sm:text-base">Vulnerabilities Found</div>
+					<div class="text-xs sm:text-sm text-blue-400 mt-2 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300">Lifetime total</div>
 				</div>
 			</div>
 			
 			<div class="text-center group">
-				<div class="bg-gradient-to-br from-blue-900/40 to-indigo-900/40 backdrop-blur-sm rounded-2xl p-4 sm:p-6 lg:p-8 border border-blue-500/20 group-hover:border-blue-400/40 transition-all duration-500 hover-lift glass">
-					<div class="text-3xl sm:text-4xl lg:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400 mb-2">
-						&lt;30s
+				<div class="bg-gradient-to-br from-purple-900/40 to-indigo-900/40 backdrop-blur-sm rounded-2xl p-4 sm:p-6 lg:p-8 border border-blue-500/20 group-hover:border-blue-400/40 transition-all duration-500 hover-lift glass">
+					<div class="text-3xl sm:text-4xl lg:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-400 mb-2">
+						9
 					</div>
-					<div class="text-gray-300 font-medium text-sm sm:text-base">Average Response</div>
-					<div class="text-xs sm:text-sm text-blue-400 mt-2 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300">Fastest in industry</div>
+					<div class="text-gray-300 font-medium text-sm sm:text-base">Vulnerability Types</div>
+					<div class="text-xs sm:text-sm text-blue-400 mt-2 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300">Comprehensive coverage</div>
 				</div>
 			</div>
 		</div>
@@ -814,11 +821,13 @@
 		<div class="bg-slate-800/30 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-12 border border-blue-400/20 mb-12 sm:mb-16 glass hover-lift group">
 			<div class="grid lg:grid-cols-5 gap-6 lg:gap-8 items-center">
 				<div class="lg:col-span-1 text-center lg:text-left">
-					<img src={mrWilson} 
-						 alt="Security Professional" 
-						 class="w-20 h-20 sm:w-24 sm:h-24 rounded-xl sm:rounded-2xl object-cover mx-auto lg:mx-0 mb-3 sm:mb-4 transition-transform duration-300 group-hover:scale-110">
-					<div class="text-white font-semibold text-sm sm:text-base">Giddel Wilson</div>
-					<div class="text-blue-300 text-xs sm:text-sm">Founder, CEO</div>
+					<a href="https://github.com/Giddel-Wilson">
+						<img src={mrWilson} 
+							 alt="Security Professional" 
+							 class="w-20 h-20 sm:w-24 sm:h-24 rounded-xl sm:rounded-2xl object-cover mx-auto lg:mx-0 mb-3 sm:mb-4 transition-transform duration-300 group-hover:scale-110">
+						<div class="text-white font-semibold text-sm sm:text-base">Giddel Wilson</div>
+						<div class="text-blue-300 text-xs sm:text-sm">Founding Dev</div>
+					</a>
 					<div class="flex justify-center lg:justify-start mt-2">
 						<div class="flex text-yellow-400 text-sm">
 							★★★★★
@@ -841,7 +850,7 @@
 							<div class="text-xs sm:text-sm text-blue-200">Faster Response</div>
 						</div>
 						<div class="group-hover:scale-105 transition-transform duration-300" style="transition-delay: 0.2s;">
-							<div class="text-xl sm:text-2xl font-bold text-indigo-400">$2.3M</div>
+							<div class="text-xl sm:text-2xl font-bold text-indigo-400">₦1.2M</div>
 							<div class="text-xs sm:text-sm text-blue-200">Security Cost Savings</div>
 						</div>
 					</div>
@@ -950,7 +959,7 @@
 		<!-- Download Options -->
 		<div class="mt-16 sm:mt-20 pt-8 sm:pt-12 border-t border-gray-700">
 			<p class="text-gray-400 font-medium mb-6 sm:mb-8 text-sm sm:text-base">
-				Available on all platforms
+				Soon to be available on all platforms
 			</p>
 			<div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
 				<button class="bg-white text-slate-900 hover:bg-gray-100 px-6 sm:px-8 lg:px-10 py-3 sm:py-4 rounded-xl font-semibold text-sm sm:text-base lg:text-lg transition-all transform hover:scale-105 flex items-center justify-center space-x-2 sm:space-x-3 shadow-lg">
