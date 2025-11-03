@@ -1,11 +1,23 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { JWT_SECRET } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 
 export interface TokenPayload {
 	userId: string;
 	email: string;
 	role: 'user' | 'admin';
+}
+
+/**
+ * Get JWT secret with fallback
+ */
+function getJwtSecret(): string {
+	const secret = env.JWT_SECRET;
+	if (!secret) {
+		console.warn('⚠️  JWT_SECRET not configured. Using fallback (NOT SECURE FOR PRODUCTION)');
+		return 'fallback-secret-key-change-in-production';
+	}
+	return secret;
 }
 
 /**
@@ -27,7 +39,7 @@ export async function verifyPassword(password: string, hash: string): Promise<bo
  * Generate a JWT token
  */
 export function generateToken(payload: TokenPayload): string {
-	return jwt.sign(payload, JWT_SECRET, {
+	return jwt.sign(payload, getJwtSecret(), {
 		expiresIn: '7d'
 	});
 }
@@ -37,7 +49,7 @@ export function generateToken(payload: TokenPayload): string {
  */
 export function verifyToken(token: string): TokenPayload | null {
 	try {
-		return jwt.verify(token, JWT_SECRET) as TokenPayload;
+		return jwt.verify(token, getJwtSecret()) as TokenPayload;
 	} catch (error) {
 		console.error('Token verification failed:', error);
 		return null;
